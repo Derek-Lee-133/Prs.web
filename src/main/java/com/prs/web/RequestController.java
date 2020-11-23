@@ -1,5 +1,6 @@
 package com.prs.web;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,51 +41,82 @@ public class RequestController {
 
 	// Add a vendor
 	@PostMapping("/")
-	public Request addRequest(@RequestBody Request v) {
-		v = requestRepo.save(v);
-		return v;
+	public Request addRequest(@RequestBody Request r) {
+		r = requestRepo.save(r);
+		return r;
+	}
+	
+//	private void recalculateCollectionValue(Request m) {
+//		// get all movie collections for this user
+//		// loop through them and sum a new total
+//		double newTotal = 0.0;
+//		List<Request> mcs = requestRepo.findByUserId(m.getUser().getId());
+//		for (Request mc: mcs) {
+//			newTotal += mc.getTotal()();
+//		}
+//		LineItem u = m.getUser();
+//		u.setCollectionValue(newTotal);
+//		userRepo.save(u);
+//	}
+
+	// update request
+	@PutMapping("/")
+	public Request updateRequest(@RequestBody Request r) {
+		r = requestRepo.save(r);
+		return r;
 	}
 
-	// update vendor
-	@PutMapping("/")
-	public Request updateRequest(@RequestBody Request v) {
-		v = requestRepo.save(v);
-		return v;
+	// submit for review
+	@PutMapping("/requests/list-reveiw/{id}")
+	public Request submitForReview(@RequestBody Request r) {
+
+		if (r.getTotal() <= 50) {
+			r.setStatus("Approved");
+		} else {
+			r.setStatus("review");
+		}
+
+		// set submitted date to current date
+
+		r.setSubmittedDate(LocalDateTime.now());
+		r = requestRepo.save(r);
+		return r;
 	}
 
 	// delete vendor
 	@DeleteMapping("/{id}")
 	public Request deleteRequest(@PathVariable int id) {
-		Optional<Request> v = requestRepo.findById(id);
-		if (v.isPresent()) {
+		Optional<Request> r = requestRepo.findById(id);
+		if (r.isPresent()) {
 
 			requestRepo.deleteById(id);
 		} else {
 			System.out.println("Error user not found for id" + id);
 		}
-		return v.get();
+		return r.get();
 	}
 
 	// Request Review
 	@GetMapping("/requests/list-review/{id}")
-	public List <Request> getRequestsByIdAndStatus(@PathVariable int id) {
-		return requestRepo.findByUserIdNotAndStatus(id, "Review");
+	public List<Request> getRequestsByIdAndStatus(@PathVariable int id) {
+		return requestRepo.findByUserNotAndStatus(id, "Review");
 
 	}
-	
+
 	// Request Approved
 	@PutMapping("/requests/approve")
-	public List <Request> getRequestsByIdAndStatusApp(@PathVariable int id) {
-		return requestRepo.findByUserIdNotAndStatus(id, "Approved");
-	
-	
-	
-}
+	public Request approveRequest(@RequestBody Request r) {
+		r.setStatus("Approve");
+		r = requestRepo.save(r);
+
+		return r;
+	}
+
 	@PutMapping("/requests/reject")
-	public List <Request> getRequestsByIdAndStatusRjt(@PathVariable int id) {
-		return requestRepo.findByUserIdNotAndStatus(id, "Reject");
-	
-	
-	
-}
+	public Request rejectRequest(@RequestBody Request r) {
+		r.setStatus("Reject");
+		r = requestRepo.save(r);
+
+		return r;
+	}
 }

@@ -13,19 +13,20 @@ public class LineItem {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	
 	private int id;
-	private int requestId;
+	@ManyToOne
+	@JoinColumn(name="RequestID")
+	private Request request;
 	@ManyToOne
 	@JoinColumn(name="ProductID")
 	private Product product;
 	private int quantity;
-	
 	public LineItem() {
 		super();
 	}
-	public LineItem(int id, int requestId, Product product, int quantity) {
+	public LineItem(int id, Request request, Product product, int quantity) {
 		super();
 		this.id = id;
-		this.requestId = requestId;
+		this.request = request;
 		this.product = product;
 		this.quantity = quantity;
 	}
@@ -35,16 +36,16 @@ public class LineItem {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getRequestId() {
-		return requestId;
+	public Request getRequest() {
+		return request;
 	}
-	public void setRequestId(int requestId) {
-		this.requestId = requestId;
+	public void setRequest(Request request) {
+		this.request = request;
 	}
-	public Product getProductId() {
+	public Product getProduct() {
 		return product;
 	}
-	public void setProductId(Product product) {
+	public void setProduct(Product product) {
 		this.product = product;
 	}
 	public int getQuantity() {
@@ -53,6 +54,6 @@ public class LineItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
+	
 	
 }

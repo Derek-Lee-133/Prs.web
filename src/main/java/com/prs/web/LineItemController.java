@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prs.business.LineItem;
+import com.prs.business.Request;
 import com.prs.db.LineItemRepo;
+import com.prs.db.RequestRepo;
 
 @CrossOrigin
 @RestController
@@ -25,6 +27,8 @@ public class LineItemController {
 	
 		@Autowired
 		private LineItemRepo lineItemRepo;
+		@Autowired
+		private RequestRepo requestRepo;
 		
 		// get all LineItems
 		@GetMapping("/")
@@ -34,36 +38,58 @@ public class LineItemController {
 		// Get a pLineItem by id
 		@GetMapping("/{id}")
 		public Optional<LineItem> getById(@PathVariable int id) {
-			return lineItemRepo.findById(id);
+			 return lineItemRepo.findById(id);
 		
 		
 		
 		}
 		// Add a pLineItem
 		@PostMapping("/")
-		public LineItem addLineItem(@RequestBody LineItem p) {
-		p =	lineItemRepo.save(p);
-		return p;
+		public LineItem addLineItem(@RequestBody LineItem lI) {
+			recalculateTotal(lI);
+		lI =	lineItemRepo.save(lI);
+		return lI;
+		}
+		private void recalculateTotal(LineItem lI) {
+			// get all lineItems for request
+			double newTotal = 0.0;
+		
+			
+			
+			
+			List<LineItem> lineItems = lineItemRepo.findByRequestId(lI.getRequest().getId());
+					// loop through them and sum a new total
+			for (LineItem line: lineItems) {
+				newTotal += line.getProduct().getPrice() * line.getQuantity();
+			}
+			// set new total in request
+			// save request
+			Request request = lI.getRequest();
+			request.setTotal(newTotal);
+			requestRepo.save(request);
 		}
 		
 		// update pLineItem
 		@PutMapping("/")
-		public LineItem updateLineItem(@RequestBody LineItem p) {
-			p = lineItemRepo.save(p);
-			return p;
+		public LineItem updateLineItem(@RequestBody LineItem lI) {
+			recalculateTotal(lI);
+			lI = lineItemRepo.save(lI);
+			return lI;
 		}
-		// delete pLineItem
+		// delete LineItem
 		@DeleteMapping("/{id}")
 		public LineItem deleteLineItem(@PathVariable int id) {
-			Optional<LineItem> p = lineItemRepo.findById(id);
-			if (p.isPresent()) {
+			Optional<LineItem> lI = lineItemRepo.findById(id);
+			
+			if ( lI.isPresent()) {
+				recalculateTotal(lI.get());
 
 			lineItemRepo.deleteById(id);
 			}
 			else {
 				System.out.println("Error user not found for id" + id);
 			}
-			return p.get();
+			return lI.get();
 		}
 
 
