@@ -35,7 +35,7 @@ public class LineItemController {
 		public List<LineItem> getAll() {
 			return lineItemRepo.findAll();
 		}
-		// Get a pLineItem by id
+		// Get a LineItem by id
 		@GetMapping("/{id}")
 		public Optional<LineItem> getById(@PathVariable int id) {
 			 return lineItemRepo.findById(id);
@@ -43,7 +43,7 @@ public class LineItemController {
 		
 		
 		}
-		// Add a pLineItem
+		// Add a LineItem
 		@PostMapping("/")
 		public LineItem addLineItem(@RequestBody LineItem lI) {
 			recalculateTotal(lI);
@@ -69,7 +69,7 @@ public class LineItemController {
 			requestRepo.save(request);
 		}
 		
-		// update pLineItem
+		// update LineItem
 		@PutMapping("/")
 		public LineItem updateLineItem(@RequestBody LineItem lI) {
 			recalculateTotal(lI);

@@ -32,32 +32,19 @@ public class RequestController {
 		return requestRepo.findAll();
 	}
 
-	// Get a vendor by id
+	// Get a request by id
 	@GetMapping("/{id}")
 	public Optional<Request> getById(@PathVariable int id) {
 		return requestRepo.findById(id);
 
 	}
 
-	// Add a vendor
+	// Add a request
 	@PostMapping("/")
 	public Request addRequest(@RequestBody Request r) {
 		r = requestRepo.save(r);
 		return r;
 	}
-	
-//	private void recalculateCollectionValue(Request m) {
-//		// get all movie collections for this user
-//		// loop through them and sum a new total
-//		double newTotal = 0.0;
-//		List<Request> mcs = requestRepo.findByUserId(m.getUser().getId());
-//		for (Request mc: mcs) {
-//			newTotal += mc.getTotal()();
-//		}
-//		LineItem u = m.getUser();
-//		u.setCollectionValue(newTotal);
-//		userRepo.save(u);
-//	}
 
 	// update request
 	@PutMapping("/")
@@ -67,7 +54,7 @@ public class RequestController {
 	}
 
 	// submit for review
-	@PutMapping("/requests/list-reveiw/{id}")
+	@PutMapping("/list-reveiw/{id}")
 	public Request submitForReview(@RequestBody Request r) {
 
 		if (r.getTotal() <= 50) {
@@ -83,7 +70,7 @@ public class RequestController {
 		return r;
 	}
 
-	// delete vendor
+	// delete request
 	@DeleteMapping("/{id}")
 	public Request deleteRequest(@PathVariable int id) {
 		Optional<Request> r = requestRepo.findById(id);
@@ -97,14 +84,14 @@ public class RequestController {
 	}
 
 	// Request Review
-	@GetMapping("/requests/list-review/{id}")
+	@GetMapping("/list-review/{id}")
 	public List<Request> getRequestsByIdAndStatus(@PathVariable int id) {
 		return requestRepo.findByUserNotAndStatus(id, "Review");
 
 	}
 
 	// Request Approved
-	@PutMapping("/requests/approve")
+	@PutMapping("/approve")
 	public Request approveRequest(@RequestBody Request r) {
 		r.setStatus("Approve");
 		r = requestRepo.save(r);
@@ -112,7 +99,8 @@ public class RequestController {
 		return r;
 	}
 
-	@PutMapping("/requests/reject")
+	// request rejected
+	@PutMapping("/reject")
 	public Request rejectRequest(@RequestBody Request r) {
 		r.setStatus("Reject");
 		r = requestRepo.save(r);

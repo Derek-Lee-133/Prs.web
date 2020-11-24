@@ -53,13 +53,14 @@ public class Request {
 		this.id = id;
 	}
 
-	public User getUserId() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUserId(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
+	
 
 	public String getDescription() {
 		return description;
@@ -110,14 +111,7 @@ public class Request {
 		this.total = total;
 	}
 	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	
 	public LocalDateTime getSubmittedDate() {
 		return submittedDate;
 	}

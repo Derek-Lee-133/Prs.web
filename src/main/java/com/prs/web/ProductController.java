@@ -32,7 +32,7 @@ public class ProductController {
 	public List<Product> getAll() {
 		return productRepo.findAll();
 	}
-	// Get a pProduct by id
+	// Get a Product by id
 	@GetMapping("/{id}")
 	public Optional<Product> getById(@PathVariable int id) {
 		return productRepo.findById(id);
@@ -40,20 +40,20 @@ public class ProductController {
 	
 	
 	}
-	// Add a pProduct
+	// Add a Product
 	@PostMapping("/")
 	public Product addProduct(@RequestBody Product p) {
 	p =	productRepo.save(p);
 	return p;
 	}
 	
-	// update pProduct
+	// update Product
 	@PutMapping("/")
 	public Product updateProduct(@RequestBody Product p) {
 		p = productRepo.save(p);
 		return p;
 	}
-	// delete pProduct
+	// delete Product
 	@DeleteMapping("/{id}")
 	public Product deleteProduct(@PathVariable int id) {
 		Optional<Product> p = productRepo.findById(id);
