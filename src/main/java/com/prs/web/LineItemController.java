@@ -21,7 +21,7 @@ import com.prs.db.RequestRepo;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/lineItems")
+@RequestMapping("/line-items")
 public class LineItemController {
 	
 	
@@ -46,8 +46,8 @@ public class LineItemController {
 		// Add a LineItem
 		@PostMapping("/")
 		public LineItem addLineItem(@RequestBody LineItem lI) {
-			recalculateTotal(lI);
 		lI =	lineItemRepo.save(lI);
+		recalculateTotal(lI);
 		return lI;
 		}
 		private void recalculateTotal(LineItem lI) {
@@ -72,8 +72,8 @@ public class LineItemController {
 		// update LineItem
 		@PutMapping("/")
 		public LineItem updateLineItem(@RequestBody LineItem lI) {
-			recalculateTotal(lI);
 			lI = lineItemRepo.save(lI);
+			recalculateTotal(lI);
 			return lI;
 		}
 		// delete LineItem
@@ -82,9 +82,8 @@ public class LineItemController {
 			Optional<LineItem> lI = lineItemRepo.findById(id);
 			
 			if ( lI.isPresent()) {
-				recalculateTotal(lI.get());
-
 			lineItemRepo.deleteById(id);
+			recalculateTotal(lI.get());
 			}
 			else {
 				System.out.println("Error user not found for id" + id);

@@ -16,14 +16,14 @@ public class User {
 	private String lastName;
 	private String phonenumber;
 	private String email;
-	private boolean isReveiwer;
+	private boolean isReviewer;
 	private boolean isAdmin;
 	
 	public User() {
 		this(0,"","","","","","",false,false);
 	}
 	public User(int id, String userName, String passWord, String firstName, String lastName, String phonenumber,
-			String email, boolean isReveiwer, boolean isAdmin) {
+			String email, boolean isReviewer, boolean isAdmin) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -32,7 +32,7 @@ public class User {
 		this.lastName = lastName;
 		this.phonenumber = phonenumber;
 		this.email = email;
-		this.isReveiwer = isReveiwer;
+		this.isReviewer = isReviewer;
 		this.isAdmin = isAdmin;
 	}
 	public int getId() {
@@ -78,10 +78,10 @@ public class User {
 		this.email = email;
 	}
 	public boolean isReveiwer() {
-		return isReveiwer;
+		return isReviewer;
 	}
 	public void setReveiwer(boolean isReveiwer) {
-		this.isReveiwer = isReveiwer;
+		this.isReviewer = isReveiwer;
 	}
 	public boolean isAdmin() {
 		return isAdmin;

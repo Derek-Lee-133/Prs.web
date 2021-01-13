@@ -42,6 +42,8 @@ public class RequestController {
 	// Add a request
 	@PostMapping("/")
 	public Request addRequest(@RequestBody Request r) {
+		r.setStatus("New");
+		r.setSubmittedDate(LocalDateTime.now());
 		r = requestRepo.save(r);
 		return r;
 	}
